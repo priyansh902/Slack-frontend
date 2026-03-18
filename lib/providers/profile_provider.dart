@@ -31,7 +31,7 @@ class ProfileProvider extends ChangeNotifier {
       if (e.toString().contains('not found')) {
         _profile = null;
       } else {
-        _error = e.toString();
+        _error = e.toString().replaceFirst('Exception: ', '');
       }
       notifyListeners();
       return false;
@@ -49,7 +49,7 @@ class ProfileProvider extends ChangeNotifier {
       return true;
     } catch (e) {
       _setLoading(false);
-      _error = e.toString();
+      _error = e.toString().replaceFirst('Exception: ', '');
       notifyListeners();
       return false;
     }
@@ -76,7 +76,7 @@ class ProfileProvider extends ChangeNotifier {
       return true;
     } catch (e) {
       _setLoading(false);
-      _error = e.toString();
+      _error = e.toString().replaceFirst('Exception: ', '');
       notifyListeners();
       return false;
     }
@@ -94,7 +94,7 @@ class ProfileProvider extends ChangeNotifier {
       return true;
     } catch (e) {
       _setLoading(false);
-      _error = e.toString();
+      _error = e.toString().replaceFirst('Exception: ', '');
       notifyListeners();
       return false;
     }
@@ -111,7 +111,7 @@ class ProfileProvider extends ChangeNotifier {
       return true;
     } catch (e) {
       _setLoading(false);
-      _error = e.toString();
+      _error = e.toString().replaceFirst('Exception: ', '');
       notifyListeners();
       return false;
     }

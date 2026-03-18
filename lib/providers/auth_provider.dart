@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../data/models/user.dart';
+import '../data/models/auth_response.dart';
 import '../data/repositories/auth_repository.dart';
 
 class AuthProvider extends ChangeNotifier {
@@ -30,7 +31,7 @@ class AuthProvider extends ChangeNotifier {
       return true;
     } catch (e) {
       _setLoading(false);
-      _error = e.toString();
+      _error = e.toString().replaceFirst('Exception: ', '');
       notifyListeners();
       return false;
     }
@@ -59,7 +60,7 @@ class AuthProvider extends ChangeNotifier {
       return true;
     } catch (e) {
       _setLoading(false);
-      _error = e.toString();
+      _error = e.toString().replaceFirst('Exception: ', '');
       notifyListeners();
       return false;
     }

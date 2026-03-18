@@ -29,7 +29,7 @@ class ProjectProvider extends ChangeNotifier {
       return true;
     } catch (e) {
       _setLoading(false);
-      _error = e.toString();
+      _error = e.toString().replaceFirst('Exception: ', '');
       notifyListeners();
       return false;
     }
@@ -46,7 +46,7 @@ class ProjectProvider extends ChangeNotifier {
       return true;
     } catch (e) {
       _setLoading(false);
-      _error = e.toString();
+      _error = e.toString().replaceFirst('Exception: ', '');
       notifyListeners();
       return false;
     }
@@ -63,7 +63,7 @@ class ProjectProvider extends ChangeNotifier {
       return true;
     } catch (e) {
       _setLoading(false);
-      _error = e.toString();
+      _error = e.toString().replaceFirst('Exception: ', '');
       notifyListeners();
       return false;
     }
@@ -80,7 +80,7 @@ class ProjectProvider extends ChangeNotifier {
       return true;
     } catch (e) {
       _setLoading(false);
-      _error = e.toString();
+      _error = e.toString().replaceFirst('Exception: ', '');
       notifyListeners();
       return false;
     }
@@ -110,7 +110,7 @@ class ProjectProvider extends ChangeNotifier {
       return true;
     } catch (e) {
       _setLoading(false);
-      _error = e.toString();
+      _error = e.toString().replaceFirst('Exception: ', '');
       notifyListeners();
       return false;
     }
@@ -152,7 +152,7 @@ class ProjectProvider extends ChangeNotifier {
       return true;
     } catch (e) {
       _setLoading(false);
-      _error = e.toString();
+      _error = e.toString().replaceFirst('Exception: ', '');
       notifyListeners();
       return false;
     }
@@ -176,7 +176,7 @@ class ProjectProvider extends ChangeNotifier {
       return true;
     } catch (e) {
       _setLoading(false);
-      _error = e.toString();
+      _error = e.toString().replaceFirst('Exception: ', '');
       notifyListeners();
       return false;
     }
@@ -193,7 +193,7 @@ class ProjectProvider extends ChangeNotifier {
       return true;
     } catch (e) {
       _setLoading(false);
-      _error = e.toString();
+      _error = e.toString().replaceFirst('Exception: ', '');
       notifyListeners();
       return false;
     }
@@ -210,7 +210,7 @@ class ProjectProvider extends ChangeNotifier {
       return true;
     } catch (e) {
       _setLoading(false);
-      _error = e.toString();
+      _error = e.toString().replaceFirst('Exception: ', '');
       notifyListeners();
       return false;
     }
@@ -227,7 +227,7 @@ class ProjectProvider extends ChangeNotifier {
       return true;
     } catch (e) {
       _setLoading(false);
-      _error = e.toString();
+      _error = e.toString().replaceFirst('Exception: ', '');
       notifyListeners();
       return false;
     }

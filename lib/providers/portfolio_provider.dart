@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../data/models/public_portfolio.dart';
+import '../data/models/portfolio.dart';
 import '../data/repositories/portfolio_repository.dart';
 
 class PortfolioProvider extends ChangeNotifier {
@@ -31,7 +31,7 @@ class PortfolioProvider extends ChangeNotifier {
       _exists = false;
       _portfolio = null;
       if (!e.toString().contains('not found')) {
-        _error = e.toString();
+        _error = e.toString().replaceFirst('Exception: ', '');
       }
       notifyListeners();
       return false;

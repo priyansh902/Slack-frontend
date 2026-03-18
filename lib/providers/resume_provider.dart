@@ -31,7 +31,9 @@ class ResumeProvider extends ChangeNotifier {
       return true;
     } catch (e) {
       _setLoading(false);
-      _error = e.toString();
+      if (!e.toString().contains('not found')) {
+        _error = e.toString().replaceFirst('Exception: ', '');
+      }
       notifyListeners();
       return false;
     }
@@ -51,7 +53,7 @@ class ResumeProvider extends ChangeNotifier {
     } catch (e) {
       _setLoading(false);
       _uploadProgress = 0.0;
-      _error = e.toString();
+      _error = e.toString().replaceFirst('Exception: ', '');
       notifyListeners();
       return false;
     }
@@ -69,7 +71,7 @@ class ResumeProvider extends ChangeNotifier {
       return true;
     } catch (e) {
       _setLoading(false);
-      _error = e.toString();
+      _error = e.toString().replaceFirst('Exception: ', '');
       notifyListeners();
       return false;
     }
@@ -86,7 +88,7 @@ class ResumeProvider extends ChangeNotifier {
       return true;
     } catch (e) {
       _setLoading(false);
-      _error = e.toString();
+      _error = e.toString().replaceFirst('Exception: ', '');
       notifyListeners();
       return false;
     }
