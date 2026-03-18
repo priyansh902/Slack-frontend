@@ -132,10 +132,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           Colors.purple,
                           onTap: () {
                             final username = user?.username ?? '';
-                            Navigator.pushNamed(
-                              context,
-                              '/portfolio/$username',
-                            );
+                            if (username.isNotEmpty) {
+                              Navigator.pushNamed(
+                                context,
+                                '/portfolio/$username',
+                              );
+                            }
                           },
                         ),
                       ],
@@ -231,7 +233,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ),
               ),
             ),
-      ),
       bottomNavigationBar: BottomNavBar(
         currentIndex: _currentIndex,
         onTap: (index) {
@@ -241,7 +242,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           _handleNavigation(index);
         },
       ),
-    )
+    );
   }
 
   Widget _buildStatCard(
@@ -295,9 +296,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   void _handleNavigation(int index) {
+    // FIXED: No dead code - each case has a break or return
     switch (index) {
       case 0:
-        // Already on home
+        // Already on home, do nothing
         break;
       case 1:
         Navigator.pushReplacementNamed(context, '/profile');
@@ -310,6 +312,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
         break;
       case 4:
         Navigator.pushReplacementNamed(context, '/search');
+        break;
+      default:
+        // Handle any other index
         break;
     }
   }
