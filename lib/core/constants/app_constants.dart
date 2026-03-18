@@ -1,5 +1,5 @@
 class AppConstants {
-  static const String appName = 'DevPortfolio';
+  static const String appName = 'Phoenix-Slack';
   static const String appVersion = '1.0.0';
   
   // Validation
