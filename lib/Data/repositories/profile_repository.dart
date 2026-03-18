@@ -64,10 +64,10 @@ class ProfileRepository {
       final response = await _apiService.post(
         ApiEndpoints.profile,
         data: {
-          if (bio != null) 'bio': bio,
-          if (skills != null) 'skills': skills,
-          if (githubUrl != null) 'githubUrl': githubUrl,
-          if (linkedinUrl != null) 'linkedinUrl': linkedinUrl,
+          'bio': ?bio,
+          'skills': ?skills,
+          'githubUrl': ?githubUrl,
+          'linkedinUrl': ?linkedinUrl,
         },
       );
       

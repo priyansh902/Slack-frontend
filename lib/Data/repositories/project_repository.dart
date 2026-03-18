@@ -76,10 +76,10 @@ class ProjectRepository {
         ApiEndpoints.projects,
         data: {
           'title': title,
-          if (description != null) 'description': description,
-          if (techStack != null) 'techStack': techStack,
-          if (githubLink != null) 'githubLink': githubLink,
-          if (liveLink != null) 'liveLink': liveLink,
+          'description': ?description,
+          'techStack': ?techStack,
+          'githubLink': ?githubLink,
+          'liveLink': ?liveLink,
         },
       );
       
@@ -104,11 +104,11 @@ class ProjectRepository {
       final response = await _apiService.put(
         '${ApiEndpoints.projects}/$projectId',
         data: {
-          if (title != null) 'title': title,
-          if (description != null) 'description': description,
-          if (techStack != null) 'techStack': techStack,
-          if (githubLink != null) 'githubLink': githubLink,
-          if (liveLink != null) 'liveLink': liveLink,
+          'title': ?title,
+          'description': ?description,
+          'techStack': ?techStack,
+          'githubLink': ?githubLink,
+          'liveLink': ?liveLink,
         },
       );
       

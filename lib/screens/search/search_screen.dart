@@ -8,7 +8,6 @@ import '../../widgets/navigation/bottom_nav_bar.dart';
 import '../../widgets/navigation/app_drawer.dart';
 import 'widgets/search_bar.dart';
 import 'widgets/user_tile.dart';
-import '../../core/utils/validators.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});

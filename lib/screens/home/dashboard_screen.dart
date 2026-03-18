@@ -241,7 +241,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           _handleNavigation(index);
         },
       ),
-    );
+    )
   }
 
   Widget _buildStatCard(

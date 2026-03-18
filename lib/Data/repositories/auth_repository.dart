@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:dio/dio.dart';
 import '../models/user.dart';
 import '../models/auth_response.dart';

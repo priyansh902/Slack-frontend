@@ -5,7 +5,6 @@ import 'package:file_picker/file_picker.dart';
 import '../../providers/resume_provider.dart';
 import '../../widgets/common/loading_indicator.dart';
 import '../../widgets/common/error_widget.dart';
-import '../../widgets/common/custom_button.dart';
 import '../../widgets/navigation/bottom_nav_bar.dart';
 import '../../widgets/navigation/app_drawer.dart';
 import 'widgets/upload_button.dart';

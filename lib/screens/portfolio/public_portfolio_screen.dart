@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../providers/portfolio_provider.dart';
-import '../../providers/profile_provider.dart';
-import '../../providers/project_provider.dart';
 import '../../widgets/common/loading_indicator.dart';
 import '../../widgets/common/error_widget.dart';
 import 'widgets/portfolio_header.dart';

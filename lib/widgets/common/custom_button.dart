@@ -96,13 +96,13 @@ class CustomButton extends StatelessWidget {
       child: isOutlined
           ? OutlinedButton(
               onPressed: onPressed,
-              child: Text(text),
               style: buttonStyle,
+              child: Text(text),
             )
           : ElevatedButton(
               onPressed: onPressed,
-              child: Text(text),
               style: buttonStyle,
+              child: Text(text),
             ),
     );
   }
