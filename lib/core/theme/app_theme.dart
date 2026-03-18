@@ -3,6 +3,7 @@ import 'colors.dart';
 
 class AppTheme {
   static ThemeData lightTheme = ThemeData(
+    brightness: Brightness.light,
     primaryColor: AppColors.primaryBlue,
     scaffoldBackgroundColor: AppColors.backgroundLight,
     appBarTheme: const AppBarTheme(
@@ -24,12 +25,6 @@ class AppTheme {
       bodyLarge: TextStyle(color: AppColors.textPrimary),
       bodyMedium: TextStyle(color: AppColors.textSecondary),
       bodySmall: TextStyle(color: AppColors.textHint),
-    ),
-    buttonTheme: ButtonThemeData(
-      buttonColor: AppColors.primaryBlue,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8),
-      ),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
@@ -74,6 +69,6 @@ class AppTheme {
       elevation: 0,
       centerTitle: true,
     ),
-    // Add dark theme configurations...
+    // Add dark theme configurations similarly...
   );
 }
