@@ -34,4 +34,12 @@ class Resume {
       updatedAt: DateTime.parse(json['updatedAt']),
     );
   }
+
+  String get formattedFileSize {
+    if (fileSize <= 0) return '0 B';
+    const suffixes = ['B', 'KB', 'MB'];
+    var i = (fileSize / 1024).floor();
+    if (i == 0) return '$fileSize B';
+    return '${(fileSize / 1024).toStringAsFixed(1)} ${suffixes[i]}';
+  }
 }

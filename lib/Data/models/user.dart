@@ -36,4 +36,6 @@ class User {
       'createdAt': createdAt.toIso8601String(),
     };
   }
+
+  bool get isAdmin => role == 'ROLE_ADMIN';
 }

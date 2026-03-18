@@ -3,6 +3,7 @@ class Profile {
   final int userId;
   final String username;
   final String name;
+  final String? email;
   final String? bio;
   final List<String> skills;
   final String? githubUrl;
@@ -15,6 +16,7 @@ class Profile {
     required this.userId,
     required this.username,
     required this.name,
+    this.email,
     this.bio,
     required this.skills,
     this.githubUrl,
@@ -24,14 +26,18 @@ class Profile {
   });
 
   factory Profile.fromJson(Map<String, dynamic> json) {
-    // Parse skills string into list
+    // Parse skills - could be List or String
     List<String> skillsList = [];
-    if (json['skills'] != null && json['skills'].isNotEmpty) {
-      skillsList = (json['skills'] as String)
-          .split(',')
-          .map((s) => s.trim())
-          .where((s) => s.isNotEmpty)
-          .toList();
+    if (json['skills'] != null) {
+      if (json['skills'] is List) {
+        skillsList = List<String>.from(json['skills']);
+      } else if (json['skills'] is String && json['skills'].isNotEmpty) {
+        skillsList = (json['skills'] as String)
+            .split(',')
+            .map((s) => s.trim())
+            .where((s) => s.isNotEmpty)
+            .toList();
+      }
     }
 
     return Profile(
@@ -39,6 +45,7 @@ class Profile {
       userId: json['userId'],
       username: json['username'],
       name: json['name'],
+      email: json['email'],
       bio: json['bio'],
       skills: skillsList,
       githubUrl: json['githubUrl'],
@@ -46,5 +53,21 @@ class Profile {
       createdAt: DateTime.parse(json['createdAt']),
       updatedAt: DateTime.parse(json['updatedAt']),
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'userId': userId,
+      'username': username,
+      'name': name,
+      'email': email,
+      'bio': bio,
+      'skills': skills.join(', '),
+      'githubUrl': githubUrl,
+      'linkedinUrl': linkedinUrl,
+      'createdAt': createdAt.toIso8601String(),
+      'updatedAt': updatedAt.toIso8601String(),
+    };
   }
 }

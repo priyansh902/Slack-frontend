@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import '../../core/constants/api_endpoints.dart';
+import '../../core/constants/app_constants.dart';
 
 class DioClient {
   static final DioClient _instance = DioClient._internal();
@@ -7,9 +9,9 @@ class DioClient {
   DioClient._internal();
 
   final Dio dio = Dio(BaseOptions(
-    baseUrl: 'http://localhost:8080/api',
-    connectTimeout: const Duration(seconds: 30),
-    receiveTimeout: const Duration(seconds: 30),
+    baseUrl: ApiEndpoints.baseUrl,
+    connectTimeout: Duration(milliseconds: AppConstants.connectionTimeout),
+    receiveTimeout: Duration(milliseconds: AppConstants.receiveTimeout),
     headers: {'Content-Type': 'application/json'},
   ));
 
@@ -19,7 +21,7 @@ class DioClient {
     dio.interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) async {
         // Add token to requests
-        String? token = await storage.read(key: 'token');
+        String? token = await storage.read(key: AppConstants.tokenKey);
         if (token != null) {
           options.headers['Authorization'] = 'Bearer $token';
         }
@@ -27,7 +29,8 @@ class DioClient {
       },
       onError: (error, handler) {
         if (error.response?.statusCode == 401) {
-          // Handle unauthorized - redirect to login
+          // Handle unauthorized - token expired
+          storage.delete(key: AppConstants.tokenKey);
         }
         return handler.next(error);
       },

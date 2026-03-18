@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../core/constants/app_constants.dart';
 
 class StorageService {
   static final StorageService _instance = StorageService._internal();
@@ -63,24 +64,24 @@ class StorageService {
 
   // Auth specific methods
   Future<void> saveToken(String token) async {
-    await setSecureData('auth_token', token);
+    await setSecureData(AppConstants.tokenKey, token);
   }
 
   Future<String?> getToken() async {
-    return await getSecureData('auth_token');
+    return await getSecureData(AppConstants.tokenKey);
   }
 
   Future<void> removeToken() async {
-    await removeSecureData('auth_token');
+    await removeSecureData(AppConstants.tokenKey);
   }
 
   Future<void> saveUser(Map<String, dynamic> user) async {
     final userJson = json.encode(user);
-    await setData('user_data', userJson);
+    await setData(AppConstants.userKey, userJson);
   }
 
   Map<String, dynamic>? getUser() {
-    final userJson = getString('user_data');
+    final userJson = getString(AppConstants.userKey);
     if (userJson != null) {
       return json.decode(userJson);
     }
@@ -88,7 +89,7 @@ class StorageService {
   }
 
   Future<void> removeUser() async {
-    await removeData('user_data');
+    await removeData(AppConstants.userKey);
   }
 
   Future<void> clearAuth() async {

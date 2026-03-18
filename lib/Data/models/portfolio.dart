@@ -1,4 +1,4 @@
-import 'package:phoenix_slack/Data/models/project.dart';
+import 'project.dart';
 
 class PublicPortfolio {
   final String username;
