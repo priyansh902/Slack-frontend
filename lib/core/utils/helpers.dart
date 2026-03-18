@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -53,8 +54,31 @@ class Helpers {
   static String formatFileSize(int bytes) {
     if (bytes <= 0) return '0 B';
     const suffixes = ['B', 'KB', 'MB', 'GB'];
-    var i = (bytes.log(1024) / 1024.log(1024)).floor();
-    return '${(bytes / (1024).pow(i)).toStringAsFixed(1)} ${suffixes[i]}';
+    
+    // Calculate using loop instead of log
+    int i = 0;
+    double size = bytes.toDouble();
+    while (size >= 1024 && i < suffixes.length - 1) {
+      size /= 1024;
+      i++;
+    }
+    
+    return '${size.toStringAsFixed(1)} ${suffixes[i]}';
+  }
+
+  // Alternative using log if you prefer (needs import 'dart:math')
+  static String formatFileSizeUsingLog(int bytes) {
+    if (bytes <= 0) return '0 B';
+    const suffixes = ['B', 'KB', 'MB', 'GB'];
+    
+    // Using log (needs import 'dart:math')
+    var i = (log(bytes) / log(1024)).floor();
+    
+    // Ensure i is within bounds
+    i = i.clamp(0, suffixes.length - 1);
+    
+    final size = bytes / pow(1024, i);
+    return '${size.toStringAsFixed(1)} ${suffixes[i]}';
   }
 
   static Map<String, dynamic> decodeBase64(String encoded) {
