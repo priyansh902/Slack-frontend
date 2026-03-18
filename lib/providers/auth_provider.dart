@@ -1,52 +1,94 @@
-import 'package:riverpod/riverpod.dart';
-import '../data/repositories/auth_repository.dart';
+import 'package:flutter/material.dart';
 import '../data/models/user.dart';
+import '../data/repositories/auth_repository.dart';
 
-final authProvider = StateNotifierProvider<AuthNotifier, AuthState>((ref) {
-  return AuthNotifier(AuthRepository());
-});
-
-class AuthNotifier extends StateNotifier<AuthState> {
-  final AuthRepository _repository;
+class AuthProvider extends ChangeNotifier {
+  final AuthRepository _repository = AuthRepository();
   
-  AuthNotifier(this._repository) : super(AuthInitial());
+  User? _user;
+  String? _token;
+  bool _isLoading = false;
+  String? _error;
 
-  Future<void> login(String email, String password) async {
-    state = AuthLoading();
+  // Getters
+  User? get user => _user;
+  String? get token => _token;
+  bool get isLoading => _isLoading;
+  String? get error => _error;
+  bool get isAuthenticated => _token != null;
+
+  Future<bool> login(String email, String password) async {
+    _setLoading(true);
+    _clearError();
+
     try {
       final response = await _repository.login(email, password);
-      state = AuthSuccess(response.user, response.token);
+      _user = response.user;
+      _token = response.token;
+      _setLoading(false);
+      notifyListeners();
+      return true;
     } catch (e) {
-      state = AuthError(e.toString());
+      _setLoading(false);
+      _error = e.toString();
+      notifyListeners();
+      return false;
     }
   }
 
-  Future<void> register(RegisterRequest request) async {
-    state = AuthLoading();
+  Future<bool> register({
+    required String name,
+    required String username,
+    required String email,
+    required String password,
+  }) async {
+    _setLoading(true);
+    _clearError();
+
     try {
-      final response = await _repository.register(request);
-      state = AuthSuccess(response.user, response.token);
+      final response = await _repository.register(
+        name: name,
+        username: username,
+        email: email,
+        password: password,
+      );
+      _user = response.user;
+      _token = response.token;
+      _setLoading(false);
+      notifyListeners();
+      return true;
     } catch (e) {
-      state = AuthError(e.toString());
+      _setLoading(false);
+      _error = e.toString();
+      notifyListeners();
+      return false;
     }
   }
 
-  void logout() {
-    _repository.logout();
-    state = AuthInitial();
+  Future<void> logout() async {
+    await _repository.logout();
+    _user = null;
+    _token = null;
+    notifyListeners();
   }
-}
 
-// States
-abstract class AuthState {}
-class AuthInitial extends AuthState {}
-class AuthLoading extends AuthState {}
-class AuthSuccess extends AuthState {
-  final User user;
-  final String token;
-  AuthSuccess(this.user, this.token);
-}
-class AuthError extends AuthState {
-  final String message;
-  AuthError(this.message);
+  Future<void> loadUser() async {
+    try {
+      final user = await _repository.getCurrentUser();
+      _user = user;
+      notifyListeners();
+    } catch (e) {
+      _error = e.toString();
+      notifyListeners();
+    }
+  }
+
+  void _setLoading(bool value) {
+    _isLoading = value;
+    notifyListeners();
+  }
+
+  void _clearError() {
+    _error = null;
+  }
 }
