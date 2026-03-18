@@ -46,7 +46,7 @@ class Validators {
 
   static String? validateUrl(String? value) {
     if (value == null || value.isEmpty) {
-      return null; // URL is optional
+      return null;
     }
     final urlRegex = RegExp(
       r'^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$',
