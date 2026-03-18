@@ -1,13 +1,14 @@
 import 'package:dio/dio.dart';
 import '../models/profile.dart';
 import '../services/api_service.dart';
+import '../../core/constants/api_endpoints.dart';
 
 class ProfileRepository {
   final ApiService _apiService = ApiService();
 
   Future<Profile> getMyProfile() async {
     try {
-      final response = await _apiService.get('/profiles/me');
+      final response = await _apiService.get(ApiEndpoints.profile);
       
       if (response.statusCode == 200) {
         return Profile.fromJson(response.data);
@@ -23,7 +24,7 @@ class ProfileRepository {
 
   Future<Profile> getProfileByUsername(String username) async {
     try {
-      final response = await _apiService.get('/profiles/username/$username');
+      final response = await _apiService.get('${ApiEndpoints.profileByUsername}/$username');
       
       if (response.statusCode == 200) {
         return Profile.fromJson(response.data);
@@ -39,7 +40,7 @@ class ProfileRepository {
 
   Future<Profile> getProfileByUserId(int userId) async {
     try {
-      final response = await _apiService.get('/profiles/user/$userId');
+      final response = await _apiService.get('${ApiEndpoints.profileByUserId}/$userId');
       
       if (response.statusCode == 200) {
         return Profile.fromJson(response.data);
@@ -61,12 +62,12 @@ class ProfileRepository {
   }) async {
     try {
       final response = await _apiService.post(
-        '/profiles/me',
+        ApiEndpoints.profile,
         data: {
-          'bio': ?bio,
-          'skills': ?skills,
-          'githubUrl': ?githubUrl,
-          'linkedinUrl': ?linkedinUrl,
+          if (bio != null) 'bio': bio,
+          if (skills != null) 'skills': skills,
+          if (githubUrl != null) 'githubUrl': githubUrl,
+          if (linkedinUrl != null) 'linkedinUrl': linkedinUrl,
         },
       );
       
@@ -81,7 +82,7 @@ class ProfileRepository {
 
   Future<void> deleteProfile() async {
     try {
-      await _apiService.delete('/profiles/me');
+      await _apiService.delete(ApiEndpoints.profile);
     } on DioException catch (e) {
       throw Exception('Failed to delete profile: ${e.message}');
     }
@@ -89,7 +90,7 @@ class ProfileRepository {
 
   Future<List<Profile>> getAllProfiles() async {
     try {
-      final response = await _apiService.get('/profiles/all');
+      final response = await _apiService.get(ApiEndpoints.allProfiles);
       
       if (response.statusCode == 200) {
         final data = response.data['profiles'] as List;
@@ -104,7 +105,7 @@ class ProfileRepository {
   // Admin endpoints
   Future<List<Profile>> getAllProfilesAdmin() async {
     try {
-      final response = await _apiService.get('/profiles/admin/all');
+      final response = await _apiService.get(ApiEndpoints.adminProfiles);
       
       if (response.statusCode == 200) {
         final data = response.data['profiles'] as List;
@@ -118,7 +119,7 @@ class ProfileRepository {
 
   Future<void> adminDeleteProfile(int profileId) async {
     try {
-      await _apiService.delete('/profiles/admin/$profileId');
+      await _apiService.delete('${ApiEndpoints.adminProfiles}/$profileId');
     } on DioException catch (e) {
       throw Exception('Failed to delete profile: ${e.message}');
     }

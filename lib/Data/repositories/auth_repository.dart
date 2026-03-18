@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import '../models/user.dart';
+import '../models/auth_response.dart';
 import '../services/api_service.dart';
 import '../services/storage_service.dart';
+import '../../core/constants/api_endpoints.dart';
 
 class AuthRepository {
   final ApiService _apiService = ApiService();
@@ -11,7 +13,7 @@ class AuthRepository {
   Future<AuthResponse> login(String email, String password) async {
     try {
       final response = await _apiService.post(
-        '/users/login',
+        ApiEndpoints.login,
         data: {
           'email': email,
           'password': password,
@@ -49,7 +51,7 @@ class AuthRepository {
   }) async {
     try {
       final response = await _apiService.post(
-        '/users/register',
+        ApiEndpoints.register,
         data: {
           'name': name,
           'username': username,
@@ -77,7 +79,7 @@ class AuthRepository {
 
   Future<User?> getCurrentUser() async {
     try {
-      final response = await _apiService.get('/users/me');
+      final response = await _apiService.get(ApiEndpoints.me);
       
       if (response.statusCode == 200) {
         return User.fromJson(response.data);

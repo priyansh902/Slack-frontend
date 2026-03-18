@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import '../models/resume.dart';
 import '../services/api_service.dart';
+import '../../core/constants/api_endpoints.dart';
 
 class ResumeRepository {
   final ApiService _apiService = ApiService();
@@ -16,7 +17,7 @@ class ResumeRepository {
       });
 
       final response = await _apiService.postMultipart(
-        '/resumes/upload',
+        ApiEndpoints.resumeUpload,
         data: formData,
       );
       
@@ -34,7 +35,7 @@ class ResumeRepository {
 
   Future<Resume?> getMyResume() async {
     try {
-      final response = await _apiService.get('/resumes/me');
+      final response = await _apiService.get(ApiEndpoints.myResume);
       
       if (response.statusCode == 200) {
         return Resume.fromJson(response.data);
@@ -50,7 +51,7 @@ class ResumeRepository {
 
   Future<Resume?> getResumeByUserId(int userId) async {
     try {
-      final response = await _apiService.get('/resumes/user/$userId');
+      final response = await _apiService.get('${ApiEndpoints.resumeByUser}/$userId');
       
       if (response.statusCode == 200) {
         return Resume.fromJson(response.data);
@@ -66,7 +67,7 @@ class ResumeRepository {
 
   Future<Resume?> getResumeByUsername(String username) async {
     try {
-      final response = await _apiService.get('/resumes/username/$username');
+      final response = await _apiService.get('${ApiEndpoints.resumeByUsername}/$username');
       
       if (response.statusCode == 200) {
         return Resume.fromJson(response.data);
@@ -82,7 +83,7 @@ class ResumeRepository {
 
   Future<void> deleteResume() async {
     try {
-      await _apiService.delete('/resumes/me');
+      await _apiService.delete(ApiEndpoints.myResume);
     } on DioException catch (e) {
       throw Exception('Failed to delete resume: ${e.message}');
     }
@@ -91,7 +92,7 @@ class ResumeRepository {
   // Admin endpoints
   Future<List<Resume>> getAllResumes() async {
     try {
-      final response = await _apiService.get('/resumes/admin/all');
+      final response = await _apiService.get(ApiEndpoints.adminResumes);
       
       if (response.statusCode == 200) {
         final data = response.data['resumes'] as List;
@@ -105,7 +106,7 @@ class ResumeRepository {
 
   Future<void> adminDeleteResume(int resumeId) async {
     try {
-      await _apiService.delete('/resumes/admin/$resumeId');
+      await _apiService.delete('${ApiEndpoints.adminResumes}/$resumeId');
     } on DioException catch (e) {
       throw Exception('Failed to delete resume: ${e.message}');
     }

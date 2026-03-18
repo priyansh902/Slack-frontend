@@ -1,12 +1,15 @@
 import '../models/user_search_result.dart';
 import '../services/api_service.dart';
+import '../../core/constants/api_endpoints.dart';
 
 class SearchRepository {
   final ApiService _apiService = ApiService();
 
   Future<List<UserSearchResult>> searchByUsername(String query) async {
     try {
-      final response = await _apiService.get('/search/username?query=$query');
+      final response = await _apiService.get(
+        '${ApiEndpoints.searchByUsername}?query=$query',
+      );
       
       if (response.statusCode == 200) {
         final results = response.data['results'] as List;
@@ -20,7 +23,9 @@ class SearchRepository {
 
   Future<List<UserSearchResult>> searchByName(String query) async {
     try {
-      final response = await _apiService.get('/search/name?query=$query');
+      final response = await _apiService.get(
+        '${ApiEndpoints.searchByName}?query=$query',
+      );
       
       if (response.statusCode == 200) {
         final results = response.data['results'] as List;
@@ -34,7 +39,9 @@ class SearchRepository {
 
   Future<List<UserSearchResult>> searchByKeyword(String keyword) async {
     try {
-      final response = await _apiService.get('/search/keyword?keyword=$keyword');
+      final response = await _apiService.get(
+        '${ApiEndpoints.searchByKeyword}?keyword=$keyword',
+      );
       
       if (response.statusCode == 200) {
         final results = response.data['results'] as List;
@@ -48,7 +55,9 @@ class SearchRepository {
 
   Future<List<Map<String, dynamic>>> getSearchSuggestions(String query) async {
     try {
-      final response = await _apiService.get('/search/suggestions?query=$query');
+      final response = await _apiService.get(
+        '${ApiEndpoints.searchSuggestions}?query=$query',
+      );
       
       if (response.statusCode == 200) {
         return List<Map<String, dynamic>>.from(response.data['suggestions']);
@@ -61,7 +70,9 @@ class SearchRepository {
 
   Future<List<UserSearchResult>> getRecentUsers({int limit = 10}) async {
     try {
-      final response = await _apiService.get('/search/recent?limit=$limit');
+      final response = await _apiService.get(
+        '${ApiEndpoints.recentUsers}?limit=$limit',
+      );
       
       if (response.statusCode == 200) {
         final results = response.data['users'] as List;
@@ -75,7 +86,7 @@ class SearchRepository {
 
   Future<UserSearchResult?> getUserById(int userId) async {
     try {
-      final response = await _apiService.get('/search/user/id/$userId');
+      final response = await _apiService.get('${ApiEndpoints.searchByUsername}/id/$userId');
       
       if (response.statusCode == 200) {
         return UserSearchResult.fromJson(response.data);
@@ -88,7 +99,7 @@ class SearchRepository {
 
   Future<UserSearchResult?> getUserByUsername(String username) async {
     try {
-      final response = await _apiService.get('/search/user/username/$username');
+      final response = await _apiService.get('${ApiEndpoints.searchByUsername}/username/$username');
       
       if (response.statusCode == 200) {
         return UserSearchResult.fromJson(response.data);
