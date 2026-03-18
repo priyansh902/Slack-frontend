@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../data/models/user_search_result.dart';
-import '../data/repositories/search_repository.dart';
 
 class SearchProvider extends ChangeNotifier {
   final SearchRepository _repository = SearchRepository();
