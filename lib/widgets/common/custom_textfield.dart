@@ -6,6 +6,7 @@ class CustomTextField extends StatelessWidget {
   final String? hintText;
   final String? Function(String?)? validator;
   final void Function(String)? onChanged;
+  final void Function(String)? onSubmitted;  // ADD THIS
   final TextInputType keyboardType;
   final bool obscureText;
   final IconData? prefixIcon;
@@ -15,6 +16,7 @@ class CustomTextField extends StatelessWidget {
   final int? maxLength;
   final bool enabled;
   final String? initialValue;
+  final TextInputAction? textInputAction;  // ADD THIS (optional)
 
   const CustomTextField({
     super.key,
@@ -23,6 +25,7 @@ class CustomTextField extends StatelessWidget {
     this.hintText,
     this.validator,
     this.onChanged,
+    this.onSubmitted,  // ADD THIS
     this.keyboardType = TextInputType.text,
     this.obscureText = false,
     this.prefixIcon,
@@ -32,6 +35,7 @@ class CustomTextField extends StatelessWidget {
     this.maxLength,
     this.enabled = true,
     this.initialValue,
+    this.textInputAction,
   });
 
   @override
@@ -41,11 +45,13 @@ class CustomTextField extends StatelessWidget {
       initialValue: initialValue,
       validator: validator,
       onChanged: onChanged,
+      onFieldSubmitted: onSubmitted,  // Map to onFieldSubmitted
       keyboardType: keyboardType,
       obscureText: obscureText,
       maxLines: maxLines,
       maxLength: maxLength,
       enabled: enabled,
+      textInputAction: textInputAction,
       decoration: InputDecoration(
         labelText: labelText,
         hintText: hintText,

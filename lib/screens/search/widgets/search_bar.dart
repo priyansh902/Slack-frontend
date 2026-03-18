@@ -26,6 +26,7 @@ class SearchBarWidget extends StatelessWidget {
       },
       onChanged: onChanged,
       onSubmitted: onSubmitted,
+      textInputAction: TextInputAction.search, 
     );
   }
 }
