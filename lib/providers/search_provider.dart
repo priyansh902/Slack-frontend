@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:phoenix_slack/data/repositories/search_repositiory.dart';
 import '../data/models/user_search_result.dart';
 
 class SearchProvider extends ChangeNotifier {
