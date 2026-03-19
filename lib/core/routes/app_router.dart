@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:phoenix_slack/screens/admin/sdmin_screen.dart';
 import '../../screens/auth/login_screen.dart';
 import '../../screens/auth/register_screen.dart';
 import '../../screens/home/dashboard_screen.dart';
@@ -75,6 +76,11 @@ class AppRouter {
           final username = state.pathParameters['username']!;
           return PublicPortfolioScreen(username: username);
         },
+      ),
+       GoRoute(
+        path: '/admin',
+        name: 'admin',
+        builder: (context, state) => const AdminScreen(),
       ),
     ],
   );

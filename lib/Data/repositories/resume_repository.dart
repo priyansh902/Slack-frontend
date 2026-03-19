@@ -7,6 +7,8 @@ import '../../core/constants/api_endpoints.dart';
 class ResumeRepository {
   final ApiService _apiService = ApiService();
 
+  // ========== USER METHODS ==========
+
   Future<Resume> uploadResume(File file) async {
     try {
       final formData = FormData.fromMap({
@@ -22,7 +24,12 @@ class ResumeRepository {
       );
       
       if (response.statusCode == 200) {
-        return Resume.fromJson(response.data['resume']);
+        // Handle response format
+        if (response.data is Map && response.data.containsKey('resume')) {
+          return Resume.fromJson(response.data['resume']);
+        } else {
+          return Resume.fromJson(response.data);
+        }
       }
       throw Exception('Failed to upload resume');
     } on DioException catch (e) {
@@ -89,18 +96,26 @@ class ResumeRepository {
     }
   }
 
-  // Admin endpoints
-  Future<List<Resume>> getAllResumes() async {
+  // ========== ADMIN METHODS ==========
+
+  Future<List<Resume>> getAllResumesAdmin() async {
     try {
       final response = await _apiService.get(ApiEndpoints.adminResumes);
       
       if (response.statusCode == 200) {
-        final data = response.data['resumes'] as List;
-        return data.map((r) => Resume.fromJson(r)).toList();
+        // Handle both possible response formats
+        if (response.data is Map && response.data.containsKey('resumes')) {
+          final data = response.data['resumes'] as List;
+          return data.map((r) => Resume.fromJson(r)).toList();
+        } else if (response.data is List) {
+          return (response.data as List).map((r) => Resume.fromJson(r)).toList();
+        }
       }
       return [];
+    } on DioException catch (e) {
+      throw Exception('Failed to load all resumes: ${e.message}');
     } catch (e) {
-      throw Exception('Failed to load resumes: $e');
+      throw Exception('Failed to load all resumes: $e');
     }
   }
 
@@ -108,7 +123,23 @@ class ResumeRepository {
     try {
       await _apiService.delete('${ApiEndpoints.adminResumes}/$resumeId');
     } on DioException catch (e) {
+      if (e.response?.statusCode == 404) {
+        throw Exception('Resume not found');
+      }
       throw Exception('Failed to delete resume: ${e.message}');
+    }
+  }
+
+  Future<Map<String, dynamic>> getResumeStats() async {
+    try {
+      final response = await _apiService.get('${ApiEndpoints.adminResumes}/stats');
+      
+      if (response.statusCode == 200) {
+        return response.data;
+      }
+      return {};
+    } on DioException catch (e) {
+      throw Exception('Failed to get resume stats: ${e.message}');
     }
   }
 }

@@ -124,4 +124,17 @@ class ProfileRepository {
       throw Exception('Failed to delete profile: ${e.message}');
     }
   }
+
+  Future<Map<String, dynamic>> getProfileStats() async {
+    try {
+      final response = await _apiService.get('${ApiEndpoints.adminProfiles}/stats');
+      
+      if (response.statusCode == 200) {
+        return response.data;
+      }
+      return {};
+    } on DioException catch (e) {
+      throw Exception('Failed to get profile stats: ${e.message}');
+    }
+  }
 }

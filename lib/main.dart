@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:phoenix_slack/providers/admin_provider.dart';
 import 'package:provider/provider.dart';
 import 'providers/auth_provider.dart';
 import 'providers/profile_provider.dart';
@@ -33,9 +34,10 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => ResumeProvider()),
         ChangeNotifierProvider(create: (_) => PortfolioProvider()),
         ChangeNotifierProvider(create: (_) => SearchProvider()),
+        ChangeNotifierProvider(create: (_) => AdminProvider()), 
       ],
       child: MaterialApp.router(
-        title: 'DevPortfolio',
+        title: 'Phoenix Slack',
         theme: AppTheme.lightTheme,
         darkTheme: AppTheme.darkTheme,
         routerConfig: AppRouter.router,

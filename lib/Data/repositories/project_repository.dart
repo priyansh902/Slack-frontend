@@ -6,6 +6,8 @@ import '../../core/constants/api_endpoints.dart';
 class ProjectRepository {
   final ApiService _apiService = ApiService();
 
+  // ========== USER METHODS ==========
+
   Future<List<Project>> getMyProjects() async {
     try {
       final response = await _apiService.get(ApiEndpoints.myProjects);
@@ -15,6 +17,8 @@ class ProjectRepository {
         return data.map((p) => Project.fromJson(p)).toList();
       }
       return [];
+    } on DioException catch (e) {
+      throw Exception('Failed to load projects: ${e.message}');
     } catch (e) {
       throw Exception('Failed to load projects: $e');
     }
@@ -29,6 +33,8 @@ class ProjectRepository {
         return data.map((p) => Project.fromJson(p)).toList();
       }
       return [];
+    } on DioException catch (e) {
+      throw Exception('Failed to load projects: ${e.message}');
     } catch (e) {
       throw Exception('Failed to load projects: $e');
     }
@@ -43,6 +49,8 @@ class ProjectRepository {
         return data.map((p) => Project.fromJson(p)).toList();
       }
       return [];
+    } on DioException catch (e) {
+      throw Exception('Failed to load projects: ${e.message}');
     } catch (e) {
       throw Exception('Failed to load projects: $e');
     }
@@ -76,14 +84,14 @@ class ProjectRepository {
         ApiEndpoints.projects,
         data: {
           'title': title,
-          'description': ?description,
-          'techStack': ?techStack,
-          'githubLink': ?githubLink,
-          'liveLink': ?liveLink,
+          if (description != null) 'description': description,
+          if (techStack != null) 'techStack': techStack,
+          if (githubLink != null) 'githubLink': githubLink,
+          if (liveLink != null) 'liveLink': liveLink,
         },
       );
       
-      if (response.statusCode == 201) {
+      if (response.statusCode == 201 || response.statusCode == 200) {
         return Project.fromJson(response.data);
       }
       throw Exception('Failed to create project');
@@ -104,11 +112,11 @@ class ProjectRepository {
       final response = await _apiService.put(
         '${ApiEndpoints.projects}/$projectId',
         data: {
-          'title': ?title,
-          'description': ?description,
-          'techStack': ?techStack,
-          'githubLink': ?githubLink,
-          'liveLink': ?liveLink,
+          if (title != null) 'title': title,
+          if (description != null) 'description': description,
+          if (techStack != null) 'techStack': techStack,
+          if (githubLink != null) 'githubLink': githubLink,
+          if (liveLink != null) 'liveLink': liveLink,
         },
       );
       
@@ -140,6 +148,8 @@ class ProjectRepository {
         return data.map((p) => Project.fromJson(p)).toList();
       }
       return [];
+    } on DioException catch (e) {
+      throw Exception('Failed to search projects: ${e.message}');
     } catch (e) {
       throw Exception('Failed to search projects: $e');
     }
@@ -156,6 +166,8 @@ class ProjectRepository {
         return data.map((p) => Project.fromJson(p)).toList();
       }
       return [];
+    } on DioException catch (e) {
+      throw Exception('Failed to search projects: ${e.message}');
     } catch (e) {
       throw Exception('Failed to search projects: $e');
     }
@@ -170,23 +182,33 @@ class ProjectRepository {
         return data.map((p) => Project.fromJson(p)).toList();
       }
       return [];
+    } on DioException catch (e) {
+      throw Exception('Failed to load recent projects: ${e.message}');
     } catch (e) {
       throw Exception('Failed to load recent projects: $e');
     }
   }
 
-  // Admin endpoints
+  // ========== ADMIN METHODS ==========
+
   Future<List<Project>> getAllProjectsAdmin() async {
     try {
       final response = await _apiService.get(ApiEndpoints.adminProjects);
       
       if (response.statusCode == 200) {
-        final data = response.data['projects'] as List;
-        return data.map((p) => Project.fromJson(p)).toList();
+        // Handle both possible response formats
+        if (response.data is Map && response.data.containsKey('projects')) {
+          final data = response.data['projects'] as List;
+          return data.map((p) => Project.fromJson(p)).toList();
+        } else if (response.data is List) {
+          return (response.data as List).map((p) => Project.fromJson(p)).toList();
+        }
       }
       return [];
+    } on DioException catch (e) {
+      throw Exception('Failed to load all projects: ${e.message}');
     } catch (e) {
-      throw Exception('Failed to load projects: $e');
+      throw Exception('Failed to load all projects: $e');
     }
   }
 
@@ -194,7 +216,23 @@ class ProjectRepository {
     try {
       await _apiService.delete('${ApiEndpoints.adminProjects}/$projectId');
     } on DioException catch (e) {
+      if (e.response?.statusCode == 404) {
+        throw Exception('Project not found');
+      }
       throw Exception('Failed to delete project: ${e.message}');
+    }
+  }
+
+  Future<Map<String, dynamic>> getProjectStats() async {
+    try {
+      final response = await _apiService.get('${ApiEndpoints.adminProjects}/stats');
+      
+      if (response.statusCode == 200) {
+        return response.data;
+      }
+      return {};
+    } on DioException catch (e) {
+      throw Exception('Failed to get project stats: ${e.message}');
     }
   }
 }
