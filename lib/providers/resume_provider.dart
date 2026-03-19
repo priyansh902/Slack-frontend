@@ -39,6 +39,44 @@ class ResumeProvider extends ChangeNotifier {
     }
   }
 
+  Future<bool> loadResumeByUserId(int userId) async {
+    _setLoading(true);
+    _clearError();
+
+    try {
+      _resume = await _repository.getResumeByUserId(userId);
+      _setLoading(false);
+      notifyListeners();
+      return true;
+    } catch (e) {
+      _setLoading(false);
+      if (!e.toString().contains('not found')) {
+        _error = e.toString().replaceFirst('Exception: ', '');
+      }
+      notifyListeners();
+      return false;
+    }
+  }
+
+  Future<bool> loadResumeByUsername(String username) async {
+    _setLoading(true);
+    _clearError();
+
+    try {
+      _resume = await _repository.getResumeByUsername(username);
+      _setLoading(false);
+      notifyListeners();
+      return true;
+    } catch (e) {
+      _setLoading(false);
+      if (!e.toString().contains('not found')) {
+        _error = e.toString().replaceFirst('Exception: ', '');
+      }
+      notifyListeners();
+      return false;
+    }
+  }
+
   Future<bool> uploadResume(File file) async {
     _setLoading(true);
     _clearError();
@@ -77,12 +115,15 @@ class ResumeProvider extends ChangeNotifier {
     }
   }
 
+  // ========== ADMIN METHODS ==========
+
   Future<bool> loadAllResumes() async {
     _setLoading(true);
     _clearError();
 
     try {
-      _allResumes = await _repository.getAllResumes();
+      // FIXED: Changed from getAllResumes() to getAllResumesAdmin()
+      _allResumes = await _repository.getAllResumesAdmin();
       _setLoading(false);
       notifyListeners();
       return true;
@@ -94,8 +135,38 @@ class ResumeProvider extends ChangeNotifier {
     }
   }
 
+  Future<bool> adminDeleteResume(int resumeId) async {
+    _setLoading(true);
+    _clearError();
+
+    try {
+      await _repository.adminDeleteResume(resumeId);
+      _allResumes.removeWhere((r) => r.id == resumeId);
+      if (_resume?.id == resumeId) {
+        _resume = null;
+      }
+      _setLoading(false);
+      notifyListeners();
+      return true;
+    } catch (e) {
+      _setLoading(false);
+      _error = e.toString().replaceFirst('Exception: ', '');
+      notifyListeners();
+      return false;
+    }
+  }
+
+  Future<void> refreshAllResumes() async {
+    await loadAllResumes();
+  }
+
   void clearResume() {
     _resume = null;
+    notifyListeners();
+  }
+
+  void clearAllResumes() {
+    _allResumes = [];
     notifyListeners();
   }
 
