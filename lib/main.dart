@@ -10,7 +10,6 @@ import 'package:phoenix_slack/screens/profile/edit_profile_screen.dart';
 import 'package:phoenix_slack/screens/profile/my_profile_screen.dart';
 import 'package:phoenix_slack/screens/profile/user_profile_screen.dart';
 import 'package:phoenix_slack/screens/projects/create_project_screen.dart';
-import 'package:phoenix_slack/screens/projects/edit_project_screen.dart';
 import 'package:phoenix_slack/screens/projects/project_detail_screen.dart';
 import 'package:phoenix_slack/screens/projects/projects_screen.dart';
 import 'package:phoenix_slack/screens/resume/resume_screen.dart';
