@@ -47,49 +47,66 @@ class AuthNotifier extends StateNotifier<AuthState> {
   
   AuthNotifier(this._ref) : super(AuthState(isAuthenticated: false));
   
-  Future<bool> login(String email, String password) async {
-    state = state.copyWith(isLoading: true, error: null);
-    
-    try {
-      final apiService = _ref.read(apiServiceProvider);
-      final response = await apiService.login(LoginRequest(
-        email: email,
-        password: password,
-      ));
+    Future<bool> login(String email, String password) async {
+      state = state.copyWith(isLoading: true, error: null);
       
-      await _ref.read(secureStorageProvider).write(
-        key: 'access_token',
-        value: response.token,
-      );
-      
-      final user = await apiService.getCurrentUser();
-      
-      state = state.copyWith(
-        isAuthenticated: true,
-        user: user,
-        isLoading: false,
-      );
-      
-      return true;
-    } catch (e) {
-      String errorMessage = 'Login failed';
-      if (e is DioException) {
-        if (e.response?.statusCode == 401) {
-          errorMessage = 'Invalid email or password';
-        } else if (e.response?.data != null) {
-          errorMessage = e.response!.data['error'] ?? 'Connection error';
+      try {
+        final apiService = _ref.read(apiServiceProvider);
+        final response = await apiService.login(LoginRequest(
+          email: email,
+          password: password,
+        ));
+        
+        // Store token exactly as received, no cleaning needed since backend is clean now
+        final token = response.token;
+        
+        print('📦 Token received: ${token.substring(0, 50)}...');
+        print('📦 Token length: ${token.length}');
+        
+        await _ref.read(secureStorageProvider).write(
+          key: 'access_token',
+          value: token,  // Store as is
+        );
+        
+        // Verify token was stored
+        final storedToken = await _ref.read(secureStorageProvider).read(key: 'access_token');
+        print('📦 Token stored: ${storedToken != null ? "Yes" : "No"}');
+        print('📦 Stored token length: ${storedToken?.length}');
+        
+        // Invalidate and recreate API service with new token
+        _ref.invalidate(apiServiceProvider);
+        final newApiService = _ref.read(apiServiceProvider);
+        
+        print('📡 Fetching user data...');
+        final user = await newApiService.getCurrentUser();
+        print('✅ User fetched: ${user.name} (${user.email})');
+        
+        state = state.copyWith(
+          isAuthenticated: true,
+          user: user,
+          isLoading: false,
+        );
+        
+        return true;
+      } catch (e) {
+        print('❌ Login error: $e');
+        if (e is DioException) {
+          print('❌ Error type: ${e.type}');
+          print('❌ Error message: ${e.message}');
+          if (e.response != null) {
+            print('❌ Response status: ${e.response?.statusCode}');
+            print('❌ Response data: ${e.response?.data}');
+          }
         }
+        
+        state = state.copyWith(
+          isLoading: false,
+          error: 'Login failed: $e',
+        );
+        
+        return false;
       }
-      
-      state = state.copyWith(
-        isLoading: false,
-        error: errorMessage,
-      );
-      
-      return false;
     }
-  }
-  
   Future<bool> register(RegisterRequest request) async {
     state = state.copyWith(isLoading: true, error: null);
     
