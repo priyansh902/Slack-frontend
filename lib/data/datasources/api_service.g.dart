@@ -1,10 +1,5 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
-
+// MANUALLY IMPLEMENTED - build_runner not available in this environment
 part of 'api_service.dart';
-
-// **************************************************************************
-// RetrofitGenerator
-// **************************************************************************
 
 class _ApiService implements ApiService {
   _ApiService(this._dio, {this.baseUrl}) {
@@ -14,302 +9,433 @@ class _ApiService implements ApiService {
   final Dio _dio;
   String? baseUrl;
 
+  // ── helpers ──────────────────────────────────────────────────────────────
+
+  Options _opts(String method) => Options(method: method,
+    responseType: ResponseType.json);
+
+  String _base() => baseUrl ?? 'http://localhost:8080';
+
+  // ── USER ─────────────────────────────────────────────────────────────────
+
   @override
   Future<LoginResponse> login(LoginRequest request) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(request.toJson());
-    final _result = await _dio.fetch<Map<String, dynamic>>(_setStreamType<LoginResponse>(Options(
-      method: 'POST',
-      headers: _headers,
-      extra: _extra,
-    ).compose(_dio.options, '/api/users/login',
-        queryParameters: queryParameters, data: _data)));
-    final value = LoginResponse.fromJson(_result.data!);
-    return value;
+    final r = await _dio.request<Map<String, dynamic>>(
+      '${_base()}/api/users/login',
+      data: request.toJson(),
+      options: _opts('POST'),
+    );
+    return LoginResponse.fromJson(r.data!);
   }
 
   @override
   Future<RegisterResponse> register(RegisterRequest request) async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(request.toJson());
-    final _result = await _dio.fetch<Map<String, dynamic>>(_setStreamType<RegisterResponse>(Options(
-      method: 'POST',
-      headers: _headers,
-      extra: _extra,
-    ).compose(_dio.options, '/api/users/register',
-        queryParameters: queryParameters, data: _data)));
-    final value = RegisterResponse.fromJson(_result.data!);
-    return value;
+    final r = await _dio.request<Map<String, dynamic>>(
+      '${_base()}/api/users/register',
+      data: request.toJson(),
+      options: _opts('POST'),
+    );
+    return RegisterResponse.fromJson(r.data!);
   }
 
   @override
   Future<User> getCurrentUser() async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    final _result = await _dio.fetch<Map<String, dynamic>>(_setStreamType<User>(Options(
-      method: 'GET',
-      headers: _headers,
-      extra: _extra,
-    ).compose(_dio.options, '/api/users/me',
-        queryParameters: queryParameters, data: _data)));
-    final value = User.fromJson(_result.data!);
-    return value;
-  }
-  
-  @override
-  Future<Map<String, dynamic>> adminDeleteProfile(int profileId) {
-    // TODO: implement adminDeleteProfile
-    throw UnimplementedError();
-  }
-  
-  @override
-  Future<Map<String, dynamic>> adminDeleteProject(int projectId) {
-    // TODO: implement adminDeleteProject
-    throw UnimplementedError();
-  }
-  
-  @override
-  Future<Map<String, dynamic>> adminDeleteResume(int resumeId) {
-    // TODO: implement adminDeleteResume
-    throw UnimplementedError();
-  }
-  
-  @override
-  Future<Map<String, dynamic>> checkPortfolioExists(String username) {
-    // TODO: implement checkPortfolioExists
-    throw UnimplementedError();
-  }
-  
-  @override
-  Future<Profile> createOrUpdateProfile(ProfileRequest request) {
-    // TODO: implement createOrUpdateProfile
-    throw UnimplementedError();
-  }
-  
-  @override
-  Future<Project> createProject(ProjectRequest request) {
-    // TODO: implement createProject
-    throw UnimplementedError();
-  }
-  
-  @override
-  Future<Map<String, dynamic>> deleteMyProfile() {
-    // TODO: implement deleteMyProfile
-    throw UnimplementedError();
-  }
-  
-  @override
-  Future<Map<String, dynamic>> deleteMyResume() {
-    // TODO: implement deleteMyResume
-    throw UnimplementedError();
-  }
-  
-  @override
-  Future<Map<String, dynamic>> deleteProject(int projectId) {
-    // TODO: implement deleteProject
-    throw UnimplementedError();
-  }
-  
-  @override
-  Future<Map<String, dynamic>> getAllProfiles() {
-    // TODO: implement getAllProfiles
-    throw UnimplementedError();
-  }
-  
-  @override
-  Future<Map<String, dynamic>> getAllProfilesAdmin() {
-    // TODO: implement getAllProfilesAdmin
-    throw UnimplementedError();
-  }
-  
-  @override
-  Future<Map<String, dynamic>> getAllProjectsAdmin() {
-    // TODO: implement getAllProjectsAdmin
-    throw UnimplementedError();
-  }
-  
-  @override
-  Future<List<Map<String, dynamic>>> getAllUsersAdmin() {
-    // TODO: implement getAllUsersAdmin
-    throw UnimplementedError();
-  }
-  
-  @override
-  Future<Profile> getMyProfile() {
-    // TODO: implement getMyProfile
-    throw UnimplementedError();
-  }
-  
-  @override
-  Future<Map<String, dynamic>> getMyProjects() {
-    // TODO: implement getMyProjects
-    throw UnimplementedError();
-  }
-  
-  @override
-  Future<Map<String, dynamic>> getMyResume() {
-    // TODO: implement getMyResume
-    throw UnimplementedError();
-  }
-  
-  @override
-  Future<Map<String, dynamic>> getPortfolio(String username) {
-    // TODO: implement getPortfolio
-    throw UnimplementedError();
-  }
-  
-  @override
-  Future<Profile> getProfileByUserId(int userId) {
-    // TODO: implement getProfileByUserId
-    throw UnimplementedError();
-  }
-  
-  @override
-  Future<Profile> getProfileByUsername(String username) {
-    // TODO: implement getProfileByUsername
-    throw UnimplementedError();
-  }
-  
-  @override
-  Future<Project> getProjectById(int projectId) {
-    // TODO: implement getProjectById
-    throw UnimplementedError();
-  }
-  
-  @override
-  Future<Map<String, dynamic>> getProjectsByUserId(int userId) {
-    // TODO: implement getProjectsByUserId
-    throw UnimplementedError();
-  }
-  
-  @override
-  Future<Map<String, dynamic>> getProjectsByUsername(String username) {
-    // TODO: implement getProjectsByUsername
-    throw UnimplementedError();
-  }
-  
-  @override
-  Future<Map<String, dynamic>> getRecentProjects() {
-    // TODO: implement getRecentProjects
-    throw UnimplementedError();
-  }
-  
-  @override
-  Future<Map<String, dynamic>> getRecentUsers(int limit) {
-    // TODO: implement getRecentUsers
-    throw UnimplementedError();
-  }
-  
-  @override
-  Future<Map<String, dynamic>> getResumeByUserId(int userId) {
-    // TODO: implement getResumeByUserId
-    throw UnimplementedError();
-  }
-  
-  @override
-  Future<Map<String, dynamic>> getResumeByUsername(String username) {
-    // TODO: implement getResumeByUsername
-    throw UnimplementedError();
-  }
-  
-  @override
-  Future<Map<String, dynamic>> getSuggestions(String query) {
-    // TODO: implement getSuggestions
-    throw UnimplementedError();
-  }
-  
-  @override
-  Future<Map<String, dynamic>> getUserByExactUsername(String username) {
-    // TODO: implement getUserByExactUsername
-    throw UnimplementedError();
-  }
-  
-  @override
-  Future<Map<String, dynamic>> getUserById(int userId) {
-    // TODO: implement getUserById
-    throw UnimplementedError();
-  }
-  
-  @override
-  Future<Map<String, dynamic>> getUserStats(int userId) {
-    // TODO: implement getUserStats
-    throw UnimplementedError();
-  }
-  
-  @override
-  Future<Map<String, dynamic>> makeAdmin(int userId) {
-    // TODO: implement makeAdmin
-    throw UnimplementedError();
-  }
-  
-  @override
-  Future<Map<String, dynamic>> portfolioHealth() {
-    // TODO: implement portfolioHealth
-    throw UnimplementedError();
-  }
-  
-  @override
-  Future<Map<String, dynamic>> removeAdmin(int userId) {
-    // TODO: implement removeAdmin
-    throw UnimplementedError();
-  }
-  
-  @override
-  Future<Map<String, dynamic>> searchByKeyword(String keyword) {
-    // TODO: implement searchByKeyword
-    throw UnimplementedError();
-  }
-  
-  @override
-  Future<Map<String, dynamic>> searchByName(String query) {
-    // TODO: implement searchByName
-    throw UnimplementedError();
-  }
-  
-  @override
-  Future<Map<String, dynamic>> searchByUsername(String query) {
-    // TODO: implement searchByUsername
-    throw UnimplementedError();
-  }
-  
-  @override
-  Future<Map<String, dynamic>> searchProjectsByTech(String tech) {
-    // TODO: implement searchProjectsByTech
-    throw UnimplementedError();
-  }
-  
-  @override
-  Future<Map<String, dynamic>> searchProjectsByTitle(String query) {
-    // TODO: implement searchProjectsByTitle
-    throw UnimplementedError();
-  }
-  
-  @override
-  Future<Project> updateProject(int projectId, ProjectRequest request) {
-    // TODO: implement updateProject
-    throw UnimplementedError();
-  }
-  
-  @override
-  Future<Map<String, dynamic>> uploadResume(MultipartFile file) {
-    // TODO: implement uploadResume
-    throw UnimplementedError();
+    final r = await _dio.request<Map<String, dynamic>>(
+      '${_base()}/api/users/me',
+      options: _opts('GET'),
+    );
+    return User.fromJson(r.data!);
   }
 
-  // Add other methods as needed...
+  // ── PROFILE ──────────────────────────────────────────────────────────────
+
+  @override
+  Future<Profile> getMyProfile() async {
+    final r = await _dio.request<Map<String, dynamic>>(
+      '${_base()}/api/profiles/me',
+      options: _opts('GET'),
+    );
+    return Profile.fromJson(r.data!);
+  }
+
+  @override
+  Future<Profile> createOrUpdateProfile(ProfileRequest request) async {
+    final r = await _dio.request<Map<String, dynamic>>(
+      '${_base()}/api/profiles/me',
+      data: request.toJson(),
+      options: _opts('POST'),
+    );
+    return Profile.fromJson(r.data!);
+  }
+
+  @override
+  Future<Map<String, dynamic>> deleteMyProfile() async {
+    final r = await _dio.request<Map<String, dynamic>>(
+      '${_base()}/api/profiles/me',
+      options: _opts('DELETE'),
+    );
+    return r.data ?? {};
+  }
+
+  @override
+  Future<Profile> getProfileByUsername(String username) async {
+    final r = await _dio.request<Map<String, dynamic>>(
+      '${_base()}/api/profiles/username/$username',
+      options: _opts('GET'),
+    );
+    return Profile.fromJson(r.data!);
+  }
+
+  @override
+  Future<Profile> getProfileByUserId(int userId) async {
+    final r = await _dio.request<Map<String, dynamic>>(
+      '${_base()}/api/profiles/user/$userId',
+      options: _opts('GET'),
+    );
+    return Profile.fromJson(r.data!);
+  }
+
+  @override
+  Future<Map<String, dynamic>> getAllProfiles() async {
+    final r = await _dio.request<Map<String, dynamic>>(
+      '${_base()}/api/profiles/all',
+      options: _opts('GET'),
+    );
+    return r.data ?? {};
+  }
+
+  // ── PROJECTS ─────────────────────────────────────────────────────────────
+
+  @override
+  Future<Map<String, dynamic>> getMyProjects() async {
+    final r = await _dio.request<Map<String, dynamic>>(
+      '${_base()}/api/projects/me',
+      options: _opts('GET'),
+    );
+    return r.data ?? {};
+  }
+
+  @override
+  Future<Map<String, dynamic>> getProjectsByUsername(String username) async {
+    final r = await _dio.request<Map<String, dynamic>>(
+      '${_base()}/api/projects/username/$username',
+      options: _opts('GET'),
+    );
+    return r.data ?? {};
+  }
+
+  @override
+  Future<Map<String, dynamic>> getProjectsByUserId(int userId) async {
+    final r = await _dio.request<Map<String, dynamic>>(
+      '${_base()}/api/projects/user/$userId',
+      options: _opts('GET'),
+    );
+    return r.data ?? {};
+  }
+
+  @override
+  Future<Project> getProjectById(int projectId) async {
+    final r = await _dio.request<Map<String, dynamic>>(
+      '${_base()}/api/projects/$projectId',
+      options: _opts('GET'),
+    );
+    return Project.fromJson(r.data!);
+  }
+
+  @override
+  Future<Project> createProject(ProjectRequest request) async {
+    final r = await _dio.request<Map<String, dynamic>>(
+      '${_base()}/api/projects',
+      data: request.toJson(),
+      options: _opts('POST'),
+    );
+    return Project.fromJson(r.data!);
+  }
+
+  @override
+  Future<Project> updateProject(int projectId, ProjectRequest request) async {
+    final r = await _dio.request<Map<String, dynamic>>(
+      '${_base()}/api/projects/$projectId',
+      data: request.toJson(),
+      options: _opts('PUT'),
+    );
+    return Project.fromJson(r.data!);
+  }
+
+  @override
+  Future<Map<String, dynamic>> deleteProject(int projectId) async {
+    final r = await _dio.request<Map<String, dynamic>>(
+      '${_base()}/api/projects/$projectId',
+      options: _opts('DELETE'),
+    );
+    return r.data ?? {};
+  }
+
+  @override
+  Future<Map<String, dynamic>> searchProjectsByTitle(String query) async {
+    final r = await _dio.request<Map<String, dynamic>>(
+      '${_base()}/api/projects/search/title',
+      queryParameters: {'query': query},
+      options: _opts('GET'),
+    );
+    return r.data ?? {};
+  }
+
+  @override
+  Future<Map<String, dynamic>> searchProjectsByTech(String tech) async {
+    final r = await _dio.request<Map<String, dynamic>>(
+      '${_base()}/api/projects/search/tech',
+      queryParameters: {'tech': tech},
+      options: _opts('GET'),
+    );
+    return r.data ?? {};
+  }
+
+  @override
+  Future<Map<String, dynamic>> getRecentProjects() async {
+    final r = await _dio.request<Map<String, dynamic>>(
+      '${_base()}/api/projects/recent',
+      options: _opts('GET'),
+    );
+    return r.data ?? {};
+  }
+
+  // ── RESUME ───────────────────────────────────────────────────────────────
+
+  @override
+  Future<Map<String, dynamic>> uploadResume(MultipartFile file) async {
+    final formData = FormData.fromMap({'file': file});
+    final r = await _dio.request<Map<String, dynamic>>(
+      '${_base()}/api/resumes/upload',
+      data: formData,
+      options: _opts('POST'),
+    );
+    return r.data ?? {};
+  }
+
+  @override
+  Future<Map<String, dynamic>> getMyResume() async {
+    final r = await _dio.request<Map<String, dynamic>>(
+      '${_base()}/api/resumes/me',
+      options: _opts('GET'),
+    );
+    return r.data ?? {};
+  }
+
+  @override
+  Future<Map<String, dynamic>> deleteMyResume() async {
+    final r = await _dio.request<Map<String, dynamic>>(
+      '${_base()}/api/resumes/me',
+      options: _opts('DELETE'),
+    );
+    return r.data ?? {};
+  }
+
+  @override
+  Future<Map<String, dynamic>> getResumeByUsername(String username) async {
+    final r = await _dio.request<Map<String, dynamic>>(
+      '${_base()}/api/resumes/username/$username',
+      options: _opts('GET'),
+    );
+    return r.data ?? {};
+  }
+
+  @override
+  Future<Map<String, dynamic>> getResumeByUserId(int userId) async {
+    final r = await _dio.request<Map<String, dynamic>>(
+      '${_base()}/api/resumes/user/$userId',
+      options: _opts('GET'),
+    );
+    return r.data ?? {};
+  }
+
+  // ── SEARCH ───────────────────────────────────────────────────────────────
+
+  @override
+  Future<Map<String, dynamic>> searchByUsername(String query) async {
+    final r = await _dio.request<Map<String, dynamic>>(
+      '${_base()}/api/search/username',
+      queryParameters: {'query': query},
+      options: _opts('GET'),
+    );
+    return r.data ?? {};
+  }
+
+  @override
+  Future<Map<String, dynamic>> searchByName(String query) async {
+    final r = await _dio.request<Map<String, dynamic>>(
+      '${_base()}/api/search/name',
+      queryParameters: {'query': query},
+      options: _opts('GET'),
+    );
+    return r.data ?? {};
+  }
+
+  @override
+  Future<Map<String, dynamic>> searchByKeyword(String keyword) async {
+    final r = await _dio.request<Map<String, dynamic>>(
+      '${_base()}/api/search/keyword',
+      queryParameters: {'keyword': keyword},
+      options: _opts('GET'),
+    );
+    return r.data ?? {};
+  }
+
+  @override
+  Future<Map<String, dynamic>> getSuggestions(String query) async {
+    final r = await _dio.request<Map<String, dynamic>>(
+      '${_base()}/api/search/suggestions',
+      queryParameters: {'query': query},
+      options: _opts('GET'),
+    );
+    return r.data ?? {};
+  }
+
+  @override
+  Future<Map<String, dynamic>> getRecentUsers(int limit) async {
+    final r = await _dio.request<Map<String, dynamic>>(
+      '${_base()}/api/search/recent',
+      queryParameters: {'limit': limit},
+      options: _opts('GET'),
+    );
+    return r.data ?? {};
+  }
+
+  @override
+  Future<Map<String, dynamic>> getUserById(int userId) async {
+    final r = await _dio.request<Map<String, dynamic>>(
+      '${_base()}/api/search/user/id/$userId',
+      options: _opts('GET'),
+    );
+    return r.data ?? {};
+  }
+
+  @override
+  Future<Map<String, dynamic>> getUserByExactUsername(String username) async {
+    final r = await _dio.request<Map<String, dynamic>>(
+      '${_base()}/api/search/user/username/$username',
+      options: _opts('GET'),
+    );
+    return r.data ?? {};
+  }
+
+  @override
+  Future<Map<String, dynamic>> getUserStats(int userId) async {
+    final r = await _dio.request<Map<String, dynamic>>(
+      '${_base()}/api/search/stats/$userId',
+      options: _opts('GET'),
+    );
+    return r.data ?? {};
+  }
+
+  // ── PORTFOLIO ─────────────────────────────────────────────────────────────
+
+  @override
+  Future<Map<String, dynamic>> getPortfolio(String username) async {
+    final r = await _dio.request<Map<String, dynamic>>(
+      '${_base()}/api/portfolio/$username',
+      options: _opts('GET'),
+    );
+    return r.data ?? {};
+  }
+
+  @override
+  Future<Map<String, dynamic>> checkPortfolioExists(String username) async {
+    final r = await _dio.request<Map<String, dynamic>>(
+      '${_base()}/api/portfolio/exists/$username',
+      options: _opts('GET'),
+    );
+    return r.data ?? {};
+  }
+
+  @override
+  Future<Map<String, dynamic>> portfolioHealth() async {
+    final r = await _dio.request<Map<String, dynamic>>(
+      '${_base()}/api/portfolio/health',
+      options: _opts('GET'),
+    );
+    return r.data ?? {};
+  }
+
+  // ── ADMIN ─────────────────────────────────────────────────────────────────
+
+  @override
+  Future<List<Map<String, dynamic>>> getAllUsersAdmin() async {
+    final r = await _dio.request<List<dynamic>>(
+      '${_base()}/api/admin/users',
+      options: Options(method: 'GET', responseType: ResponseType.json),
+    );
+    return (r.data as List).cast<Map<String, dynamic>>();
+  }
+
+  @override
+  Future<Map<String, dynamic>> makeAdmin(int userId) async {
+    final r = await _dio.request<Map<String, dynamic>>(
+      '${_base()}/api/admin/users/$userId/make-admin',
+      options: _opts('POST'),
+    );
+    return r.data ?? {};
+  }
+
+  @override
+  Future<Map<String, dynamic>> removeAdmin(int userId) async {
+    final r = await _dio.request<Map<String, dynamic>>(
+      '${_base()}/api/admin/users/$userId/remove-admin',
+      options: _opts('DELETE'),
+    );
+    return r.data ?? {};
+  }
+
+  @override
+  Future<Map<String, dynamic>> getAllProjectsAdmin() async {
+    final r = await _dio.request<Map<String, dynamic>>(
+      '${_base()}/api/projects/admin/all',
+      options: _opts('GET'),
+    );
+    return r.data ?? {};
+  }
+
+  @override
+  Future<Map<String, dynamic>> adminDeleteProject(int projectId) async {
+    final r = await _dio.request<Map<String, dynamic>>(
+      '${_base()}/api/projects/admin/$projectId',
+      options: _opts('DELETE'),
+    );
+    return r.data ?? {};
+  }
+
+  @override
+  Future<Map<String, dynamic>> adminDeleteResume(int resumeId) async {
+    final r = await _dio.request<Map<String, dynamic>>(
+      '${_base()}/api/resumes/admin/$resumeId',
+      options: _opts('DELETE'),
+    );
+    return r.data ?? {};
+  }
+
+  @override
+  Future<Map<String, dynamic>> getAllProfilesAdmin() async {
+    final r = await _dio.request<Map<String, dynamic>>(
+      '${_base()}/api/profiles/admin/all',
+      options: _opts('GET'),
+    );
+    return r.data ?? {};
+  }
+
+  @override
+  Future<Map<String, dynamic>> adminDeleteProfile(int profileId) async {
+    final r = await _dio.request<Map<String, dynamic>>(
+      '${_base()}/api/profiles/admin/$profileId',
+      options: _opts('DELETE'),
+    );
+    return r.data ?? {};
+  }
 }
 
 RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
-  if (T != dynamic && !(requestOptions.responseType == ResponseType.bytes ||
-      requestOptions.responseType == ResponseType.stream)) {
+  if (T != dynamic &&
+      !(requestOptions.responseType == ResponseType.bytes ||
+          requestOptions.responseType == ResponseType.stream)) {
     if (T == String) {
       requestOptions.responseType = ResponseType.plain;
     } else {

@@ -50,3 +50,9 @@ class ProfileRequest {
   
   Map<String, dynamic> toJson() => _$ProfileRequestToJson(this);
 }
+extension ProfileX on Profile {
+  List<String> get skillsList {
+    if (skills.isEmpty) return [];
+    return skills.split(',').map((s) => s.trim()).where((s) => s.isNotEmpty).toList();
+  }
+}

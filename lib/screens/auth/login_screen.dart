@@ -1,151 +1,133 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:phoenix_slack/core/themes/app_theme.dart';
 import 'package:phoenix_slack/providers/auth_provider.dart';
-import 'package:phoenix_slack/widgets/common/custom_button.dart';
-import 'package:phoenix_slack/widgets/common/custom_text_field.dart';
+import 'package:phoenix_slack/widgets/common/app_button.dart';
+import 'package:phoenix_slack/widgets/common/app_field.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
-
-  @override
-  ConsumerState<LoginScreen> createState() => _LoginScreenState();
+  @override ConsumerState<LoginScreen> createState() => _S();
 }
+class _S extends ConsumerState<LoginScreen> {
+  final _form = GlobalKey<FormState>();
+  final _email = TextEditingController();
+  final _pass  = TextEditingController();
+  bool _hide = true, _loading = false;
 
-class _LoginScreenState extends ConsumerState<LoginScreen> {
-  final _formKey = GlobalKey<FormState>();
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-  bool _isPasswordVisible = false;
-  bool _isLoading = false;
+  @override void dispose() { _email.dispose(); _pass.dispose(); super.dispose(); }
 
-  @override
-  void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
-    super.dispose();
-  }
-
-  Future<void> _handleLogin() async {
-    if (_formKey.currentState!.validate()) {
-      setState(() => _isLoading = true);
-      
-      final success = await ref.read(authStateProvider.notifier).login(
-        _emailController.text.trim(),
-        _passwordController.text,
-      );
-      
-      setState(() => _isLoading = false);
-      
-      if (success && mounted) {
-        Navigator.pushReplacementNamed(context, '/home');
-      } else if (mounted) {
-        final error = ref.read(authStateProvider).error;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(error ?? 'Login failed')),
-        );
-      }
+  Future<void> _login() async {
+    if (!_form.currentState!.validate()) return;
+    setState(() => _loading = true);
+    final ok = await ref.read(authStateProvider.notifier).login(_email.text.trim(), _pass.text);
+    if (!mounted) return;
+    setState(() => _loading = false);
+    if (ok) {
+      Navigator.pushReplacementNamed(context, '/home');
+    } else {
+      final err = ref.read(authStateProvider).error ?? 'Login failed';
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(err), backgroundColor: AppColors.error,
+      ));
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+      body: Stack(children: [
+        Positioned(top: -100, right: -80,
+          child: _Blob(size: 280, color: AppColors.accent.withOpacity(0.07))),
+        Positioned(bottom: 80, left: -80,
+          child: _Blob(size: 220, color: AppColors.cyan.withOpacity(0.05))),
+        SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.fromLTRB(24, 32, 24, 24),
+            child: Form(key: _form, child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 60),
-                Icon(
-                  Icons.code,
-                  size: 80,
-                  color: Theme.of(context).primaryColor,
-                ),
-                const SizedBox(height: 24),
-                Text(
-                  'Welcome Back',
-                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
+                const SizedBox(height: 16),
+                _LogoBadge().animate().fadeIn(duration: 500.ms).slideY(begin: -0.3),
+                const SizedBox(height: 36),
+                Text('Welcome\nback.',
+                  style: GoogleFonts.spaceGrotesk(fontSize: 38, fontWeight: FontWeight.w700, height: 1.1,
+                    color: isDark ? AppColors.textPri : AppColors.lTextPri),
+                ).animate().fadeIn(delay: 100.ms).slideX(begin: -0.15),
                 const SizedBox(height: 8),
-                Text(
-                  'Sign in to your account',
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: Colors.grey[600],
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 48),
-                CustomTextField(
-                  controller: _emailController,
-                  label: 'Email',
-                  prefixIcon: Icons.email_outlined,
-                  keyboardType: TextInputType.emailAddress,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Email is required';
-                    }
-                    if (!value.contains('@')) {
-                      return 'Enter a valid email';
-                    }
+                Text('Sign in to your account',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ).animate().fadeIn(delay: 180.ms),
+                const SizedBox(height: 40),
+                AppField(controller: _email, label: 'Email', hint: 'you@example.com',
+                  icon: Icons.mail_outline_rounded, keyboard: TextInputType.emailAddress,
+                  validator: (v) {
+                    if (v == null || v.isEmpty) return 'Email is required';
+                    if (!v.contains('@')) return 'Enter a valid email';
                     return null;
                   },
-                ),
+                ).animate().fadeIn(delay: 260.ms),
                 const SizedBox(height: 16),
-                CustomTextField(
-                  controller: _passwordController,
-                  label: 'Password',
-                  prefixIcon: Icons.lock_outline,
-                  obscureText: !_isPasswordVisible,
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      _isPasswordVisible
-                          ? Icons.visibility_off
-                          : Icons.visibility,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        _isPasswordVisible = !_isPasswordVisible;
-                      });
-                    },
+                AppField(controller: _pass, label: 'Password', hint: '••••••••',
+                  icon: Icons.lock_outline_rounded, obscure: _hide,
+                  suffix: IconButton(
+                    icon: Icon(_hide ? Icons.visibility_off_outlined : Icons.visibility_outlined, size: 20),
+                    onPressed: () => setState(() => _hide = !_hide),
                   ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Password is required';
-                    }
-                    if (value.length < 6) {
-                      return 'Password must be at least 6 characters';
-                    }
+                  validator: (v) {
+                    if (v == null || v.isEmpty) return 'Password is required';
+                    if (v.length < 6) return 'Minimum 6 characters';
                     return null;
                   },
-                ),
+                ).animate().fadeIn(delay: 320.ms),
+                const SizedBox(height: 32),
+                AppButton(text: 'Sign In', onPressed: _login, isLoading: _loading)
+                  .animate().fadeIn(delay: 380.ms),
                 const SizedBox(height: 24),
-                CustomButton(
-                  text: 'Login',
-                  onPressed: _handleLogin,
-                  isLoading: _isLoading,
-                ),
-                const SizedBox(height: 16),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text("Don't have an account?"),
-                    TextButton(
-                      onPressed: () => Navigator.pushNamed(context, '/register'),
-                      child: const Text('Sign Up'),
-                    ),
-                  ],
-                ),
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  Text("Don't have an account?", style: Theme.of(context).textTheme.bodyMedium),
+                  TextButton(
+                    onPressed: () => Navigator.pushNamed(context, '/register'),
+                    style: TextButton.styleFrom(foregroundColor: AppColors.accent,
+                      padding: const EdgeInsets.symmetric(horizontal: 6)),
+                    child: Text('Sign Up',
+                      style: GoogleFonts.spaceGrotesk(fontWeight: FontWeight.w600, fontSize: 14)),
+                  ),
+                ]).animate().fadeIn(delay: 440.ms),
               ],
-            ),
+            )),
           ),
         ),
-      ),
+      ]),
     );
   }
+}
+
+class _LogoBadge extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) => Container(
+    width: 56, height: 56,
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(16),
+      gradient: const LinearGradient(
+        colors: [AppColors.accent, Color(0xFFB06EF6)],
+        begin: Alignment.topLeft, end: Alignment.bottomRight,
+      ),
+    ),
+    child: const Icon(Icons.bolt_rounded, color: Colors.white, size: 30),
+  );
+}
+
+class _Blob extends StatelessWidget {
+  final double size;
+  final Color color;
+  const _Blob({required this.size, required this.color});
+  @override
+  Widget build(BuildContext context) => Container(
+    width: size, height: size,
+    decoration: BoxDecoration(shape: BoxShape.circle, color: color),
+  );
 }

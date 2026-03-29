@@ -6,10 +6,8 @@ class UrlLauncherUtils {
       if (await canLaunch(url)) {
         await launch(url);
       } else {
-        print('Could not launch $url');
       }
     } catch (e) {
-      print('Error launching URL: $e');
     }
   }
   

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:phoenix_slack/core/extensions/context_extensions.dart';
 import 'package:phoenix_slack/data/model/search/search_result.dart';
 
 class UserSearchCard extends StatelessWidget {
@@ -17,7 +17,7 @@ class UserSearchCard extends StatelessWidget {
       child: InkWell(
         onTap: () {
           if (!result.isYou) {
-            context.push('/profile/${result.username}');
+            context.push('/profile/${result.username}' as Widget);
           }
         },
         borderRadius: BorderRadius.circular(12),

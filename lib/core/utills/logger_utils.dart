@@ -3,13 +3,11 @@ import 'package:flutter/foundation.dart';
 class LoggerUtils {
   static void log(String message, {String tag = 'DEBUG'}) {
     if (kDebugMode) {
-      print('[$tag] $message');
     }
   }
   
   static void error(String message, {dynamic error, StackTrace? stackTrace}) {
     if (kDebugMode) {
-      print('[ERROR] $message');
       if (error != null) print('Error: $error');
       if (stackTrace != null) print('StackTrace: $stackTrace');
     }

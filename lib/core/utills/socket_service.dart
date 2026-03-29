@@ -30,15 +30,12 @@ class SocketService {
     _socket?.connect();
     
     _socket?.onConnect((_) {
-      print('Socket connected');
     });
     
     _socket?.onDisconnect((_) {
-      print('Socket disconnected');
     });
     
     _socket?.onError((error) {
-      print('Socket error: $error');
     });
   }
   
